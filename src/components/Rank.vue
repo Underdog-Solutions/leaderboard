@@ -1,25 +1,25 @@
 <template>
-  <v-container fluid grid-list-md>
-    <v-layout row wrap justify-center>
+  <v-container fluid text-xs-center>
+    <v-layout row wrap justify-space-between>
       <v-flex
         v-for="(item, index) in list" :key="index"
-        xl1 lg2 md2 sm4 xs6
+        xl2 lg3 md3 sm5 xs12
       >
-
         <v-progress-circular
-          v-bind:size="150"
-          v-bind:width="15"
-          v-bind:rotate="-90"
-          v-bind:value="item.classesAttended * 2.78"
-          color="teal"
+          :size="200"
+          :width="17"
+          :rotate="-90"
+          :value="item.classesAttended * 2.78"
+          :color="progressColor(item.classesAttended)"
+          class="my-3"
         >
-          <h4 class="teal--text text--lighten-2 text-xs-center addClass"
-            @click="addClass"
+          <h2 class="addClass"
+            @click="addClass(index)"
           >
             {{ item.classesAttended }}
-          </h4>
-          {{ item.firstName }} {{ item.lastName }}
-        </v-progress-circular>        
+          </h2>
+        </v-progress-circular>
+        <h4 class="mb-5">{{ item.firstName }} {{ item.lastName }}</h4>
       </v-flex>
     </v-layout>
   </v-container>
@@ -33,7 +33,7 @@ export default {
     return {
       value: 36,
       rawList: [{
-        classesAttended: 36,
+        classesAttended: 45,
         firstName: 'Jill',
         lastName: 'Smith',
         paid: true
@@ -43,12 +43,82 @@ export default {
         lastName: 'Smith',
         paid: true
       }, {
-        classesAttended: 8,
+        classesAttended: 11,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 20,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 30,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 20,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 30,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 20,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 0,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 20,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 30,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 45,
         firstName: 'Jill',
         lastName: 'Smith',
         paid: true
       }, {
         classesAttended: 5,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 11,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 20,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 30,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 20,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 30,
         firstName: 'Jill',
         lastName: 'Smith',
         paid: true
@@ -57,6 +127,25 @@ export default {
         firstName: 'Jill',
         lastName: 'Smith',
         paid: true
+      }, {
+        classesAttended: 36,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 9,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 9,
+        firstName: 'Jill',
+        lastName: 'Smith',
+        paid: true
+      }, {
+        classesAttended: 30,
+        firstName: 'Jill',
+        lastName: 'Smith'
       }]
     }
   },
@@ -70,8 +159,22 @@ export default {
   },
 
   methods: {
-    addClass () {
-      console.log('add')
+    addClass (index) {
+      console.log('add', index)
+    },
+
+    progressColor: function (val) {
+      if (val === 0) {
+        return 'amber'
+      } else if (val <= 10) {
+        return 'purple darken-1'
+      } else if (val <= 20) {
+        return 'blue darken-1'
+      } else if (val <= 30) {
+        return 'teal lighten-1'
+      } else if (val >= 36) {
+        return 'green'
+      }
     }
   }
 }
@@ -79,6 +182,7 @@ export default {
 
 <style lang="stylus" scoped>
   .addClass
+    margin-bottom 0
     &:hover
       cursor crosshair
 </style>
