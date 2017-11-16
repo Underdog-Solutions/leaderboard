@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="true">
+  <v-app>
     <v-toolbar fixed :prominent="true" app>
       <!-- <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
@@ -11,16 +11,18 @@
         <img src="/static/koa_logo_white.png"></img>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <h4 class="daysLeft">{{ daysLeft }} days left!</h4>
     </v-toolbar>
     <main>
       <v-content>
-        <v-container text-xs-center red--text text--darken-4>
-          <h2>Knockout 36 Challenge</h2>
+        <v-container>
+          <h1 class="knockout red--text text--darken-4" 
+            text-xs-center
+          >
+            <b>KNOCKOUT <span class="knockout--bigger">36</span> CHALLENGE</b>
+          </h1>
         </v-container>
-        <Rank></Rank>
-        <v-layout row wrap justify-center>
-            36 days left!
-          </v-layout>
+        <router-view></router-view>
       </v-content>
     </main>    
     <v-footer :fixed="fixed" app>
@@ -30,15 +32,12 @@
 </template>
 
 <script>
-  import Rank from '@/components/Rank'
-  
   export default {
-    components: { Rank },
-
     data () {
       return {
         fixed: false,
-        title: 'KOA Kingdom Challenge - Knockout 36'
+        title: 'KOA Kingdom Challenge - Knockout 36',
+        daysLeft: 36
       }
     }
   }
@@ -49,5 +48,17 @@
   .logo img
     width 50%
     margin-top 5px
+  
+  .knockout
+    font-size 5em
+    font-weight 700
+    margin-top 0.35em
+    text-align center
+
+    &--bigger
+      font-size 1.5em
+  
+  .daysLeft
+    margin-top 20px
 </style>
 
