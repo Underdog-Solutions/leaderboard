@@ -31,6 +31,8 @@
 </template>
 
 <script>
+  import firebase from '@/firebase'
+
   export default {
     data () {
       return {
@@ -38,6 +40,13 @@
         title: 'KOA Kingdom Challenge - Knockout 36',
         daysLeft: 36
       }
+    },
+
+    mounted () {
+      firebase.auth().signInAnonymously()
+        .catch((err) => {
+          console.log('err', err)
+        })
     },
 
     methods: {

@@ -4,7 +4,7 @@
       v-model="success"
       top
       right
-      timeout="2000"
+      :timeout="2000"
     >
       Participant added!      
       <v-icon>check_circle</v-icon>
@@ -14,7 +14,7 @@
       color="error"
       top
       right
-      timeout="2000"
+      :timeout="2000"
       v-model="error"
     >
       Error adding. Try again. If error continues, text BJ at 808.343.7636
@@ -24,7 +24,7 @@
     <v-snackbar
       color="warning"
       top right
-      timeout="3000"
+      :timeout="3000"
       v-model="required"
     >
       Please fill out both fields.
