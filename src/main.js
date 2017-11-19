@@ -16,7 +16,13 @@ import {
   VToolbar,
   transitions,
   VCard,
-  VProgressCircular
+  VProgressCircular,
+  VForm,
+  VTextField,
+  VAlert,
+  VMenu,
+  VProgressLinear,
+  VSnackbar
 } from 'vuetify'
 import './stylus/main.styl'
 
@@ -36,11 +42,21 @@ Vue.use(Vuetify, {
     VToolbar,
     transitions,
     VCard,
-    VProgressCircular
+    VProgressCircular,
+    VForm,
+    VTextField,
+    VAlert,
+    VMenu,
+    VProgressLinear,
+    VSnackbar
   }
 })
 
 Vue.config.productionTip = false
+
+Vue.filter('capitalize', function (val) {
+  return val.charAt(0).toUpperCase() + val.slice(1)
+})
 
 /* eslint-disable no-new */
 new Vue({

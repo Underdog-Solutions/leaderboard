@@ -1,166 +1,83 @@
 <template>
-  <v-container fluid text-xs-center>
-    <v-layout row wrap justify-space-between>
-      <v-flex
-        v-for="(item, index) in list" :key="index"
-        xl2 lg3 md3 sm5 xs12
-      >
-        <v-progress-circular
-          :size="200"
-          :width="17"
-          :rotate="-90"
-          :value="item.classesAttended * 2.78"
-          :color="progressColor(item.classesAttended)"
-          class="my-3"
+  <v-container fluid>
+    <div class="items">
+      <div class="item"
+        v-for="(item, index) in list" :key="item['.key']"
         >
-          <h2 class="addClass"
-            @click="addClass(index)"
+        <div class="need-row mb-0">
+          <v-menu class="mt-0">
+            <div class="need-row ml-3" slot="activator">
+              <h5 class="name mt-0 bold">
+                {{ item.firstName | capitalize }} {{ item.lastName.charAt(0) | capitalize }}.
+              </h5>
+            </div>                             
+            <!-- Increment list -->
+            <v-list class="mt-4">
+              <v-list-tile @click="modifyClass(item, 'add')">
+                <v-list-tile-title>Add Class</v-list-tile-title>
+              </v-list-tile>
+              <v-list-tile @click="modifyClass(item, 'minus')">
+                <v-list-tile-title>Remove Class</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+
+          <v-progress-linear
+            height="10"
+            :value="item.classCount * 2.78"
+            :color="progressColor(item.classCount)"
+            background-color="grey darken-4"
+            class="progressBar"          
           >
-            {{ item.classesAttended }}
-          </h2>
-        </v-progress-circular>
-        <h4 class="mb-5">{{ item.firstName }} {{ item.lastName }}</h4>
-      </v-flex>
-    </v-layout>
+          </v-progress-linear>
+
+          <div class="mt-0 need-row classCount ml-5">
+            <h4 class="bold">{{ item.classCount }}</h4> 
+            <h5 class="mt-1 ml-1"> / 36</h5>
+          </div>
+        </div>
+      </div>
+    </div>
   </v-container>
 </template>
 
 <script>
+import firebase from '@/firebase'
+const db = firebase.database()
+
 export default {
   name: 'Rank',
 
   data () {
     return {
       value: 36,
-      rawList: [{
-        classesAttended: 45,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 5,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 11,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 20,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 30,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 20,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 30,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 20,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 0,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 20,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 30,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 45,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 5,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 11,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 20,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 30,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 20,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 30,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 10,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 36,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 9,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 9,
-        firstName: 'Jill',
-        lastName: 'Smith',
-        paid: true
-      }, {
-        classesAttended: 30,
-        firstName: 'Jill',
-        lastName: 'Smith'
-      }]
+      showMenu: false,
+      options: [
+        { title: 'Add Class' },
+        { title: 'Remove Class' }
+      ]
     }
+  },
+
+  firebase: {
+    pplRef: db.ref('ppl')
   },
 
   computed: {
     list: function () {
-      return this.rawList
-        .filter((i) => i.paid === true)
-        .sort((a, b) => b.classesAttended - a.classesAttended)
+      const copy = this.pplRef
+        // .filter((i) => i.paid === true)
+      return copy.sort((a, b) => b.classCount - a.classCount)
     }
   },
 
   methods: {
-    addClass (index) {
-      console.log('add', index)
+    modifyClass (ppl, action) {
+      const modClass = action === 'add' ? ppl.classCount + 1 : ppl.classCount - 1
+      this.$firebaseRefs.pplRef
+        .child(ppl['.key'])
+        .child('classCount')
+        .set(modClass)
     },
 
     progressColor: function (val) {
@@ -172,7 +89,7 @@ export default {
         return 'blue darken-1'
       } else if (val <= 30) {
         return 'teal lighten-1'
-      } else if (val >= 36) {
+      } else if (val >= 30) {
         return 'green'
       }
     }
@@ -181,8 +98,39 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .addClass
-    margin-bottom 0
-    &:hover
-      cursor crosshair
+  h1, h2, h3, h4, h5, h5
+    color white
+    margin 0
+
+  .need-row
+    display flex
+    flex-direction row
+  
+  .items
+    display flex
+    flex-wrap wrap
+    justify-content space-around
+
+  .items .item
+    flex 0 0 45%
+    box-sizing border-box
+    padding 5px 0
+   
+  .name
+    text-align left
+    width 150px
+  
+  .classCount
+    width 150px
+    justify-content flex-end
+
+  .progressBar
+  
+  .bold
+    font-weight bold
+
+  @media screen and (max-width: 560px)
+    .name
+      width 75px
+
 </style>

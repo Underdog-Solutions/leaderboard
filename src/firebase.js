@@ -10,11 +10,5 @@ let config = {
 }
 
 let app = Firebase.initializeApp(config)
-let db = app.database()
-let pplRef = db.ref('ppl')
 
-export default {
-  db,
-  pplRef
-}
-
+export default app
